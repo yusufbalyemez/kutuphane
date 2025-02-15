@@ -10,6 +10,20 @@ exports.getAllBooks = async (req,res) => {
     }
 }
 
+exports.getBookById = async (req,res)=> {
+    try {
+        const bookId = req.params.id;
+        const book = await Book.findById(bookId);
+        if(!book){
+            return res.status(404).json({message:"Kitap bulunamadı."});
+        }
+        res.json(book);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message:"Kitap getirilirken hata oluştu."});
+    }
+}
+
 exports.addBook = async (req,res) => {
     try {
         const {title,author,numberOfPages} = req.body;
