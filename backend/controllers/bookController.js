@@ -27,3 +27,17 @@ exports.addBook = async (req,res) => {
         res.status(500).json({message: "Kitap ekleme sırasında bir hata oluştu."});
     }
 }
+
+exports.deleteBook = async (req,res) => {
+    try {
+        const bookId = req.params.id;
+        const deletedBook = await Book.findOneAndDelete({_id:bookId});
+        if(!deletedBook){
+            return res.status(404).json({message:"Silmek istediğiniz kitap bulunamadı"});
+        }
+        res.json({message:"Kitap başarıyla silindi."});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message:"Kitap silme sırasında bir hata oluştu."});
+    }
+}
