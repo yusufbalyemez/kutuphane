@@ -20,6 +20,7 @@ exports.addBook = async (req,res) => {
         })
         await newBook.save();
         res.status(201).json({message: "Kitap başarıyla eklendi.", book:newBook});
+        //201 oluşturmada 200 ise güncelleme, listeleme, silme sonuçlarında kullanılır.
 
         
     }catch (error) {
@@ -39,5 +40,21 @@ exports.deleteBook = async (req,res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({message:"Kitap silme sırasında bir hata oluştu."});
+    }
+}
+
+exports.updateBook = async (req,res) => {
+    try {
+        const bookId = req.params.id;
+        const {title,author,numberOfPages} = req.body;
+        const updatedBook = await Book.findByIdAndUpdate(bookId,
+            {title,author,numberOfPages},
+            {new:true}
+        )
+        res.status(200).json({message:"Kitap başarıyla güncellendi.",book:updatedBook});
+        //Güncelleme olduğu için 200 status kodu kullanılır.
+    } catch (error){
+        console.error(error);
+        res.status(500).json({message:"Kitap güncelleme sırasında bir hata oluştu."});
     }
 }
