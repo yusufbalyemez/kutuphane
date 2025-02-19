@@ -42,7 +42,7 @@ exports.getBookWithAuthor = async (req, res) => {
 
 exports.searchBooks = async (req, res) => {
     try {
-        const { query } = req.query;
+        
         const books = await Book.find({ title: { $regex: query, $options: "i" } });
         if (books.length === 0) {
             return res.status(404).json({ message: "Aradığınız kriterlere uygun kitap bulunamadı." });
